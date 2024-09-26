@@ -66,6 +66,7 @@
 import { ref, onMounted } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router';
+import { setLoginCookies } from '../../utils/cookie'
 
 const router = useRouter();
 
@@ -76,6 +77,10 @@ const loginForm = ref({
 
 function login() {
   alert('OK')
+  
+  // 设置 cookie
+  setLoginCookies('value');
+  router.replace({ path: '/home' })
 }
 </script>
 
