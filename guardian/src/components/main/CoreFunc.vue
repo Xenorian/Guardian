@@ -1,5 +1,5 @@
 <template>
-  <el-row justify="space-between" :gutter="40">
+  <el-row justify="space-between" :gutter="20">
     <el-col :span="6">
 
       <a-card hoverable class="custom-card">
@@ -99,7 +99,7 @@
 
 .custom-list {
   list-style-type: none; /* 移除默认的列表样式 */
-  padding-left: 5%;
+  padding-left: 0;
 }
 
 .custom-list li {
@@ -131,6 +131,13 @@
 
 .custom-card:hover .text1 {
   color: #409EFF; /* 鼠标悬停时变为蓝色 */
+}
+
+::v-deep(.ant-card-body) {
+  padding: 0;
+  padding-top: 10%;
+  padding-left: 10%;
+  padding-bottom: 40px;
 }
 
 </style>

@@ -3,7 +3,7 @@
     <el-container>
       <el-header style="background-color: #01174B">
         <el-row :gutter="10" style="height: 100%;padding-right: 1%;padding-left: 1%;">
-          <el-col :span="2" style="height: 100%;">
+          <el-col :span="3" style="height: 100%;">
 
             <div class="headLogo" @click="goToHome" style="font-weight: 100;letter-spacing: 1.5px;">
               <img src="../assets/apertureWhite.png" style="height: 50%;margin-right: 5%;margin-left: 5%;">
@@ -24,7 +24,7 @@
             监管任务
           </el-col>
 
-          <el-col :span="2" :offset="14" class="headUserLogo">
+          <el-col :span="2" :offset="13" class="headUserLogo">
             <el-dropdown>
               <span class="el-dropdown-link">
                 <el-avatar
@@ -42,7 +42,7 @@
         </el-row>
       </el-header>
 
-      <el-scrollbar height="95vh">
+      <el-scrollbar height="94vh">
         <div style="width: 100%;">
           <el-main style="padding: 0;">
             <div class="banner">
@@ -85,6 +85,14 @@ function goToHome(){
 
 function goToRule(){
   router.push({ path: '/rule' })
+}
+
+function goToModel(){
+  router.push({ path: '/model' })
+}
+
+function goToTask(){
+  router.push({ path: '/task' })
 }
 </script>
 

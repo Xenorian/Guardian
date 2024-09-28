@@ -124,6 +124,7 @@
 
 .custom-list {
   list-style-type: none; /* 移除默认的列表样式 */
+  padding-left: 10%;
 }
 
 .custom-list li {
@@ -148,13 +149,20 @@
   border-radius: 50%; /* 使点呈圆形 */
   transition: background-color 0.3s ease; /* 添加渐变效果 */
 }
-
+.custom-card{
+  min-width: 340px;
+}
 .custom-card:hover .custom-list li::before {
   background-color: #409EFF; /* 鼠标悬停时变为蓝色 */
 }
 
 .custom-card:hover .text1 {
   color: #409EFF; /* 鼠标悬停时变为蓝色 */
+}
+
+::v-deep(.ant-card-body) {
+  padding: 0;
+  padding-bottom: 40px;
 }
 
 </style>

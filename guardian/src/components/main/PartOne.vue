@@ -3,25 +3,25 @@
     <div style="margin-top: 8vh;margin-bottom: 8vh;font-size: 45px;font-weight: 600;">应用领域</div>
   </div>
 
-  <AppField style="width: 65%;"/>
+  <AppField style="width: 70%;"/>
 
   <div class="text-overlay">
     <div style="margin-top: 8vh;margin-bottom: 8vh;font-size: 45px;font-weight: 600;">核心技术</div>
   </div>
 
-  <CoreTech style="width: 65%;"/>
+  <CoreTech style="width: 70%;"/>
 
   <div class="text-overlay">
     <div style="margin-top: 10vh;margin-bottom: 10vh;font-size: 45px;font-weight: 600;">技术优势</div>
   </div>
 
-  <TechAdv style="width: 65%;"/>
+  <TechAdv style="width: 70%;"/>
 
   <div class="text-overlay">
     <div style="margin-top: 10vh;margin-bottom: 10vh;font-size: 45px;font-weight: 600;">平台功能</div>
   </div>
 
-  <CoreFunc style="width: 65%;margin-bottom: 10%;" />
+  <CoreFunc style="width: 70%;margin-bottom: 20%;" />
 
 </template>
   
