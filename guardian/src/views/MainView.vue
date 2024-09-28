@@ -1,6 +1,6 @@
 <template>
-  <a-layout class="layout">
-    <a-layout-header style="padding-left: 0;">
+  <a-layout class="layout" style="height: 100vh;">
+    <a-layout-header style="padding-left: 1%;">
       <div class="logo" @click="goToHome" style="font-weight: 100;letter-spacing: 1.5px;">
         <img src="../assets/apertureWhite.png" style="height: 50%;margin-right: 5%;margin-left: 5%;">
         门神智能监管平台
@@ -19,7 +19,7 @@
       </a-menu>
 
       <el-dropdown class="headUserLogo">
-        <span class="el-dropdown-link">
+        <span class="el-dropdown-link" style="outline: none;">
           <el-avatar
             :src="avatar"
           />
@@ -35,14 +35,18 @@
 
     <a-layout-content style="padding: 0 0">
 
-      <div>
+
+    <el-scrollbar class="scrollbar">
+      <div class="content">
         <RouterView />
       </div>
+    </el-scrollbar>
+
     </a-layout-content>
 
 
     <a-layout-footer style="text-align: center">
-      Ant Design ©2018 Created by Ant UED
+      Guardian ©2024
     </a-layout-footer>
   </a-layout>
 </template>
@@ -93,11 +97,6 @@ function goToTask(){
 </script>
 
 <style scoped>
-.site-layout-content {
-  min-height: 280px;
-  padding: 24px;
-  background: #fff;
-}
 
 .logo {
   float: left;
@@ -107,7 +106,7 @@ function goToTask(){
   cursor: pointer;
 
   align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
+  justify-content: left; /* 水平居中 */
 
   color: white;
   font-size: medium;
@@ -122,11 +121,13 @@ function goToTask(){
   margin: 16px 0 16px 24px;
 }
 
-[data-theme='dark'] .site-layout-content {
-  background: #141414;
-}
-
 .headUserLogo{
+  cursor: pointer;
+  color: var(--el-color-primary);
+
+  align-items: center;
+  outline: none;
+  
   position: relative;
   left: 98%;
   top: -80%;
