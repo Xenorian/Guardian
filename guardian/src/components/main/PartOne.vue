@@ -9,19 +9,19 @@
     <div style="margin-top: 8vh;margin-bottom: 8vh;font-size: 45px;font-weight: 600;">核心技术</div>
   </div>
 
-  <CoreTech style="width: 70%;"/>
+  <CoreTech style="width: 75%;"/>
 
   <div class="text-overlay">
     <div style="margin-top: 10vh;margin-bottom: 10vh;font-size: 45px;font-weight: 600;">技术优势</div>
   </div>
 
-  <TechAdv style="width: 70%;"/>
+  <TechAdv style="width: 75%;"/>
 
   <div class="text-overlay">
     <div style="margin-top: 10vh;margin-bottom: 10vh;font-size: 45px;font-weight: 600;">平台功能</div>
   </div>
 
-  <CoreFunc style="width: 70%;margin-bottom: 20%;" />
+  <CoreFunc style="width: 75%;margin-bottom: 20%;" />
 
 </template>
   

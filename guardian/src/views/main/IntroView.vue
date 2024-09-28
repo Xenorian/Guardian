@@ -28,24 +28,8 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-function goToLogin(){
-  router.push({ path: '/login' })
-}
-
-function goToHome(){
-  router.push({ path: '/home' })
-}
-
 function goToRule(){
-  router.push({ path: '/rule' })
-}
-
-function goToModel(){
-  router.push({ path: '/model' })
-}
-
-function goToTask(){
-  router.push({ path: '/task' })
+  router.push({ path: '/home/rule' })
 }
 </script>
 
