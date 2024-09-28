@@ -15,10 +15,12 @@
   },
   "dependencies": {
     "@types/js-cookie": "^3.0.6",
+    "ant-design-vue": "^4.0.0-rc.6",
     "axios": "^1.7.7",
     "element-plus": "^2.8.3",
     "js-cookie": "^3.0.5",
     "pinia": "^2.1.7",
+    "vite-plugin-components": "^0.13.3",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
   },
