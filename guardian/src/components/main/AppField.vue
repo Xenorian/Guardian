@@ -1,5 +1,5 @@
 <template>
-  <el-row justify="space-between" :gutter="80">
+  <el-row justify="space-between" :gutter="40">
     <el-col :span="6">
       <a-card hoverable class="applicationCard">
         <template #cover>

@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header style="background-color: #01174B">
+      <el-header style="background-color: #01174B;min-height: 5vh;">
         <el-row :gutter="10" style="height: 100%;padding-right: 1%;padding-left: 1%;">
           <el-col :span="3" style="height: 100%;">
 
@@ -12,15 +12,15 @@
 
           </el-col>
 
-          <el-col :span="1" :offset="1" @click="goToRule" class="headLogo">
+          <el-col :span="1" :offset="1" @click="goToRule" class="headItem">
             监管规则
           </el-col>
 
-          <el-col :span="1" :offset="1" @click="gotToModel" class="headLogo">
+          <el-col :span="1" :offset="1" @click="goToModel" class="headItem">
             监管模型
           </el-col>
 
-          <el-col :span="1" :offset="1" @click="gotToTask" class="headLogo">
+          <el-col :span="1" :offset="1" @click="goToTask" class="headItem">
             监管任务
           </el-col>
 
@@ -42,36 +42,18 @@
         </el-row>
       </el-header>
 
-      <el-scrollbar height="94vh">
-        <div style="width: 100%;">
-          <el-main style="padding: 0;">
-            <div class="banner">
-              <div class="text-overlay">
-                <div style="margin-top: 3%;margin-bottom: 1%;font-size: 58px;font-weight: 800;">浙江大学门神智能监管平台</div>
-                <div style="margin-bottom: 3%;font-size: 28px;font-weight: 200;">
-                  建立面向复杂服务监管的新型定义语言，多模态规范数据融合、<br>
-                  违规事件智能识别技术，打造智能高效的服务监管体系。
-                </div>
-
-                <el-button @click="goToRule" type="primary" size="large" style="margin-bottom: 3%;width: 7%;">开始使用</el-button>
-              </div>
-            </div>
-
-            <div class="content">
-              <PartOne />
-            </div>
-          </el-main>
-        </div>
-      </el-scrollbar>
+      <div style="height: 95vh;">
+        <RouterView />
+      </div>
 
     </el-container>
   </div>
 </template>
 
 <script setup lang="ts">
-import PartOne from '../components/main/PartOne.vue'
 import { useRouter } from 'vue-router';
 import avatar from '../assets/mainPage/avatar.png'
+import { RouterView } from 'vue-router'
 
 const router = useRouter();
 
@@ -80,19 +62,19 @@ function goToLogin(){
 }
 
 function goToHome(){
-  router.push({ path: '/home' })
+  router.push({ path: '/home/intro' })
 }
 
 function goToRule(){
-  router.push({ path: '/rule' })
+  router.push({ path: '/home/rule' })
 }
 
 function goToModel(){
-  router.push({ path: '/model' })
+  router.push({ path: '/home/model' })
 }
 
 function goToTask(){
-  router.push({ path: '/task' })
+  router.push({ path: '/home/task' })
 }
 </script>
 
@@ -105,6 +87,24 @@ function goToTask(){
   height: 100%; /* 根据你的需求调整高度 */
   color: white;
   font-size: medium;
+}
+
+.headItem {
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+  height: 100%; /* 根据你的需求调整高度 */
+  color: rgb(220, 220, 220);
+  font-size: medium;
+
+  background-color: transparent; /* 初始背景颜色 */
+  transition: background-color 0.3s ease, color 0.3s ease; /* 平滑过渡效果 */
+}
+
+.headItem:hover {
+  background-color: #1890FF; /* 悬停时的背景颜色 */
+  color: white; /* 悬停时的文字颜色 */
 }
 
 .headUserLogo{
@@ -122,38 +122,5 @@ function goToTask(){
   display: flex;
   align-items: center;
   outline: none;
-}
-
-.banner{
-  object-fit: cover;
-  height: 40%;
-  width: 100%;
-
-  background-image: url('../assets/headBanner.png');
-  background-size: cover; /* 使背景图像覆盖整个容器 */
-  background-position: center; /* 使背景图像居中 */
-  background-repeat: no-repeat; /* 不重复背景图像 */
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-
-.text-overlay {
-  color: white;
-  text-align: left;
-  width: 100%;
-
-  padding: 10px;
-  border-radius: 5px;
-  margin-left: 10%
-}
-
-.content{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 垂直居中 */
-  justify-content: left; /* 水平居中 */
-  height: 100%; /* 根据你的需求调整高度 */
 }
 </style>

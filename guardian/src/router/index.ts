@@ -1,14 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import MainView from '../views/MainView.vue'
+import IntroView from '../views/main/IntroView.vue'
+import RuleView from '../views/main/RuleView.vue'
+
 import { getLoginCookies,removeLoginCookies } from '../utils/cookie'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
   routes: [
-    { path: '/', redirect: '/home' },
-    { path: '/home', component: MainView },
+    { path: '/', redirect: '/home/intro' },
+    { path: '/home', 
+      redirect: '/home/intro',
+      component: MainView , 
+      children:[
+      {
+        path:'intro',
+        component: IntroView,
+      },
+      {
+        path:'rule',
+        component: RuleView,
+      },
+      ]
+    },
     { path: '/login', component: LoginView },
   ],
 })
