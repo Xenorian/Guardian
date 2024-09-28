@@ -80,7 +80,7 @@ function login() {
   
   // 设置 cookie
   setLoginCookies('value');
-  router.replace({ path: '/home' })
+  router.push({ path: '/home' })
 }
 </script>
 
