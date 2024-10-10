@@ -9,13 +9,31 @@
 
     <div style="padding: 2%; padding-right: 15%; margin-top: 2%;">
       <el-form-item label="规则领域名称" prop="name">
-        <el-input v-model="form.name" autocomplete="off" />
+        <el-input class="inputBox" v-model="form.name" autocomplete="off" />
       </el-form-item>
       <el-form-item label="规则领域描述" prop="describe">
-        <el-input v-model="form.describe" autocomplete="off" type="textarea" />
+        <el-input class="inputBox" v-model="form.describe" autocomplete="off" type="textarea" />
       </el-form-item>
       <el-form-item label="规则领域封面" prop="cover">
-        <el-input v-model="form.cover" autocomplete="off" />
+        <el-upload
+          class="inputBox"
+          drag
+          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+        >
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">
+            Drop file here or <em>click to upload</em>
+          </div>
+          <template #tip>
+            <div class="el-upload__tip">
+              提示：封面图大小不超过20M，仅限png、jpg、gif格式
+            </div>
+          </template>
+        </el-upload>
+      </el-form-item>
+
+      <el-form-item label="规则领域字段">
+        <!-- <el-input class="inputBox" v-model="form.describe" autocomplete="off" type="textarea" /> -->
       </el-form-item>
     </div>
     
@@ -29,6 +47,8 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
+
+import { UploadFilled } from '@element-plus/icons-vue'
 
 const form = reactive({
   name: '',
@@ -74,5 +94,9 @@ const resetForm = (formEl) => {
   display: flex;
   flex-direction: column;
   margin-right: 5%;
+}
+
+.inputBox{
+  margin-left: 10%;
 }
 </style>

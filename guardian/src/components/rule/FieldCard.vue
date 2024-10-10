@@ -27,8 +27,8 @@
   <el-dialog
     v-model="editDialogVisible"
     title="编辑规则领域"
-    width="550"
-    style="padding: 1%;"
+    width="35%"
+    style="padding: 1.5%;"
   >
     <CardForm />
   </el-dialog>
@@ -36,8 +36,8 @@
   <el-dialog
     v-model="delDialogVisible"
     :show-close="false"
-    width="500"
-    style="padding: 1%;"
+    width="35%"
+    style="padding: 1.5%;"
   >
     <template #header="{ close, titleId, titleClass }">
       <div class="my-header">
@@ -60,8 +60,15 @@
 <script lang="ts" setup>
 import { SettingOutlined, EditOutlined, EllipsisOutlined,AimOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import { ref,reactive } from 'vue'
+import { useRouter,useRoute } from 'vue-router';
 
 import CardForm from './CardForm.vue'
+
+const router = useRouter();
+const route = useRoute();
+const segments = route.path.split('/');
+segments.pop(); // 移除最后一段
+const newPath = segments.join('/') + '/field';
 
 const editDialogVisible = ref(false)
 const delDialogVisible = ref(false)
@@ -75,7 +82,7 @@ function delCard(){
 }
 
 function clickCard(){
-  console.log('click')
+  router.push({ path: newPath })
 }
 
 const ruleFormRef = ref(null);

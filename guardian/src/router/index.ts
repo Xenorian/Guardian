@@ -2,7 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import MainView from '../views/MainView.vue'
 import IntroView from '../views/main/IntroView.vue'
-import RuleView from '../views/main/RuleView.vue'
+
+import RuleMainView from '../views/main/rule/MainView.vue'
+import RuleView from '../views/main/rule/RuleView.vue'
+import FieldView from '../views/main/rule/FieldView.vue'
 
 import { getLoginCookies,removeLoginCookies } from '../utils/cookie'
 
@@ -13,15 +16,30 @@ const router = createRouter({
     { path: '/', redirect: '/home/intro' },
     { path: '/home', 
       redirect: '/home/intro',
-      component: MainView , 
+      component: MainView ,
+      meta: { breadcrumbName: '首页' },
       children:[
       {
         path:'intro',
         component: IntroView,
+        meta: { breadcrumbName: '简介' },
       },
       {
         path:'rule',
-        component: RuleView,
+        redirect: '/home/rule/showField',
+        component: RuleMainView,
+        meta: { breadcrumbName: '监管领域' },
+        children:[
+        {
+          path:'showField',
+          component: RuleView,
+        },
+        {
+          path:'field',
+          component: FieldView,
+          meta: { breadcrumbName: '领域规则' },
+        }
+        ]
       },
       ]
     },

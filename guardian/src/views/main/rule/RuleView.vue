@@ -1,40 +1,22 @@
 <template>
-  <a-layout class="layout" style="width: 100%;">
-    <a-layout-content style="padding: 0px 50px;">
+  <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
+    <a-alert class="alert" message="欢迎使用门神智能监管平台" description="建立面向复杂服务监管的新型定义语言，多模态规范数据融合、违规事件智能识别技术，打造智能高效的服务监管体系。" type="info" />
 
-      <a-breadcrumb :routes="routes" style="padding-top: 1%;padding-bottom: 1%;">
-        <template #itemRender="{ route, routes, paths }">
-          <span v-if="routes.indexOf(route) === routes.length - 1">
-            {{ route.breadcrumbName }}
-          </span>
-          <router-link v-else :to="`${basePath}/${paths.join('/')}`">
-            {{ route.breadcrumbName }}
-          </router-link>
-        </template>
-      </a-breadcrumb>
-      
-      <div :style="{ background: '#fff', padding: '24px', minHeight: '280px' }">
-        <a-alert class="alert" message="欢迎使用门神智能监管平台" description="建立面向复杂服务监管的新型定义语言，多模态规范数据融合、违规事件智能识别技术，打造智能高效的服务监管体系。" type="info" />
+    <div style="font-size: x-large;font-weight: 600;margin: 1%;margin-left: 0">
+      规则领域
+    </div>
 
-        <div style="font-size: x-large;font-weight: 600;margin: 1%;margin-left: 0">
-          规则领域
-        </div>
-
-        <div class="cards">
-          <p v-for="item in 20" :key="item" class="cards-item"> <FieldCard /> </p>
-        </div>
-        
-      </div>
-    </a-layout-content>
-
-  </a-layout>
+    <div class="cards">
+      <p v-for="item in 20" :key="item" class="cards-item"> <FieldCard /> </p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { defineComponent, ref } from 'vue';
 import { HomeOutlined } from '@ant-design/icons-vue';
 import { useRouter, RouterView } from 'vue-router'
-import FieldCard from '../../components/rule/FieldCard.vue'
+import FieldCard from '../../../components/rule/FieldCard.vue'
 
 interface Route {
   path: string;

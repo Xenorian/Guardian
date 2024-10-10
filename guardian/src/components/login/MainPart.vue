@@ -5,8 +5,8 @@
       <img src="/src/assets/LeftBanner.jpg" alt="Left Banner" style="width: 100%; height: 100%;">
     </el-col>
     <el-col :span="14" :xs="24" class="content-right" style="text-align:center;">
-      <div class="loginContent" style="margin-left: 20%;margin-right: 20%;">
-        <div class="loginContentTop" style="margin-top: 45%;">
+      <div class="loginContent" style="margin-left: 20%;margin-right: 20%;margin-top: 20%;">
+        <div class="loginContentTop" style="margin-top: 10%;">
           <div class="header">
             <div class="fontSize">登录</div>
           </div>
