@@ -1,9 +1,9 @@
 <template>
   <a-layout class="layout" style="height: 100vh;">
     <a-layout-header style="padding-left: 1%;">
-      <div class="logo" @click="goToHome" style="font-weight: 100;letter-spacing: 1.5px;">
+      <div class="logo" @click="goToHome" style="font-weight: 100;letter-spacing: 1.5px;width: 20%;">
         <img src="../assets/apertureWhite.png" style="height: 50%;margin-right: 5%;margin-left: 5%;">
-        门神智能监管平台
+        数字服务智能监管支撑工具
       </div>
 
       <a-menu
@@ -45,9 +45,9 @@
     </a-layout-content>
 
 
-    <a-layout-footer style="text-align: center">
+    <!-- <a-layout-footer style="text-align: center">
       Guardian ©2024
-    </a-layout-footer>
+    </a-layout-footer> -->
   </a-layout>
 </template>
 
@@ -104,6 +104,7 @@ function goToTask(){
   width: 12%;
   height: 100%;
   cursor: pointer;
+  flex-wrap: nowrap;
 
   align-items: center; /* 垂直居中 */
   justify-content: left; /* 水平居中 */

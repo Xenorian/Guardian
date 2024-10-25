@@ -7,6 +7,12 @@ import RuleMainView from '../views/main/rule/MainView.vue'
 import RuleView from '../views/main/rule/RuleView.vue'
 import FieldView from '../views/main/rule/FieldView.vue'
 
+import ModelMainView from '../views/main/model/MainView.vue'
+import ModelTestPage from '../views/main/model/TestPage.vue'
+
+import TaskMainView from '../views/main/task/MainView.vue'
+import TaskTestPage from '../views/main/task/TestPage.vue'
+
 import { getLoginCookies,removeLoginCookies } from '../utils/cookie'
 
 const router = createRouter({
@@ -40,6 +46,32 @@ const router = createRouter({
           meta: { breadcrumbName: '领域规则' },
         }
         ]
+      },
+      {
+        path:'model',
+        component: ModelMainView,
+        redirect: '/home/model/test',
+        meta: { breadcrumbName: '监管模型' },
+        children:[
+          {
+            path:'test',
+            component: ModelTestPage,
+            meta: { breadcrumbName: '多监管模型对齐与聚合' },
+          }
+          ]
+      },
+      {
+        path:'task',
+        component: TaskMainView,
+        redirect: '/home/task/test',
+        meta: { breadcrumbName: '监管任务' },
+        children:[
+          {
+            path:'test',
+            component: TaskTestPage,
+            meta: { breadcrumbName: '查看任务' },
+          }
+          ]
       },
       ]
     },

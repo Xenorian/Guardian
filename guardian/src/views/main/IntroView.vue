@@ -3,7 +3,7 @@
     <el-main style="padding: 0;">
       <div class="banner">
         <div class="text-overlay">
-          <div style="margin-top: 3%;margin-bottom: 1%;font-size: 58px;font-weight: 800;">浙江大学门神智能监管平台</div>
+          <div style="margin-top: 3%;margin-bottom: 1%;font-size: 58px;font-weight: 800;">数字服务智能监管支撑平台</div>
           <div style="margin-bottom: 3%;font-size: 28px;font-weight: 200;">
             建立面向复杂服务监管的新型定义语言，多模态规范数据融合、<br>
             违规事件智能识别技术，打造智能高效的服务监管体系。
