@@ -16,7 +16,7 @@
       <DeleteOutlined key="del" @click.stop="delCard"/>
     </template>
 
-    <a-card-meta title="title1" description="description1">
+    <a-card-meta title="看守所" description="公安看守场景异常行为检测">
       <template #avatar>
         <AimOutlined />
       </template>

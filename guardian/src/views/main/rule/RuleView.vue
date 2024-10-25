@@ -7,7 +7,7 @@
     </div>
 
     <div class="cards">
-      <p v-for="item in 20" :key="item" class="cards-item"> <FieldCard /> </p>
+      <p v-for="item in 1" :key="item" class="cards-item"> <FieldCard /> </p>
     </div>
   </div>
 </template>
