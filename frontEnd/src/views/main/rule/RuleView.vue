@@ -7,7 +7,7 @@
     </div>
 
     <div class="cards">
-      <p v-for="item in 1" :key="item" class="cards-item"> <FieldCard /> </p>
+      <p v-for="item in 3" :key="item" class="cards-item"> <FieldCard /> </p>
     </div>
   </div>
 </template>
@@ -75,10 +75,12 @@ const routes = ref<Route[]>([
 }
 
 .cards{
+  margin-left: 6%;
+  margin-right: 5%;
   display: flex;
   flex-wrap: wrap;
   align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
+  justify-content: left; /* 水平居中 */
   color: white;
   font-size: medium;
 }

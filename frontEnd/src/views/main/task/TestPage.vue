@@ -8,6 +8,7 @@
             <Form />
           </div>
         </el-col>
+
         <el-col :span="11">
           <div class="grid-content bg-purple-light">
             <div class="midHead" style="margin-bottom: 3%;margin-right: 5%;">
@@ -22,23 +23,13 @@
               </el-row>
             </div>
 
-            <div class="mid">
-              <el-input
-                v-model="textarea"
-                style="width: 100%;margin-right: 3%;"
-                autosize
-                type="textarea"
-                placeholder="Please input"
-              />
-            </div>
-
-            <div class="button-group">
-              <el-button>监管数据上传</el-button>
-              <el-button type="primary">开始运行</el-button>
+            <div class="mid">  
+              <midPart />
             </div>
 
           </div>
         </el-col>
+
         <el-col :span="8">
           <div style="font-size: 20px;font-weight: 800;margin-bottom: 3%;">违规数量</div>
           <div class="text">
@@ -77,21 +68,15 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, ref } from 'vue';
-import {
-  CheckCircleTwoTone
-} from '@ant-design/icons-vue';
+import { defineComponent, ref,reactive } from 'vue';
+import {CheckCircleTwoTone} from '@ant-design/icons-vue';
+import { UploadFilled } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus';
+
 import Form from '../../../components/task/form.vue'
+import { uploadImageURL } from '@/utils/api'
 
-const textarea = ref(`At Studios, we value the contributions of our users and understand that they are the lifeblood of our community. We recognize that users generate a significant amount of content, which includes posts, comments, and other entries. It is essential to note that users are solely responsible for the content they post and the information they share within our platform.
-By participating in our community, users agree to hold Studios harmless from any legitimate claims that may arise from third parties due to a user's culpable violation of their obligations. This means that users must ensure that their contributions do not infringe upon the rights of others, including copyright, trademark, or privacy rights.
-While Studios does not claim ownership of the content entered by users, we do require certain rights to use and manage this content. Users grant Studios a permanent, irrevocable, non-exclusive right to use, reproduce, modify, adapt, publish, translate, create derivative works from, distribute, and display the content and contributions posted by users on our platform.
-This license allows Studios to maintain and improve the platform, ensure the integrity of the community, and provide a consistent and engaging experience for all users. It also enables us to promote and market our services, which may include showcasing user-generated content as part of our promotional efforts.
-Users take full responsibility for the content and entries they post. Users agree to release Studios from any legitimate claims from third parties arising from a culpable violation of the users'obligations.Studios explicitly does not claim content entered by users as its own. However, users shall grant Studios the permanent,irrevocable,non-exclusive right to use the content and contributions posted by the users.
-We take the security of user data seriously and implement appropriate technical and organizational measures to protect against unauthorized access, disclosure, alteration, or destruction of personal data. While no system can guarantee complete security, we continually strive to enhance our security measures to protect your information.
-Our privacy policy may change from time to time to reflect updates in our services or changes in the law. We will notify users of any material changes to this policy by posting the updated policy on our platform and, where appropriate, by sending a notification to the email address associated with your account.
-`)
-
+import midPart from '@/components/task/uploadAndDisplay.vue'
 </script>
 
 <style scoped>
@@ -131,12 +116,9 @@ Our privacy policy may change from time to time to reflect updates in our servic
 }
 
 .mid{
-  display: flex;
-  align-items: center; /* 垂直居中 */
-  justify-content: left; /* 水平居中 */
   height: 100%; /* 根据你的需求调整高度 */
-  color: black;
   font-size: medium;
+  width: 100%;
 }
 
 .right{
@@ -150,11 +132,6 @@ Our privacy policy may change from time to time to reflect updates in our servic
 .card{
   margin-right: 3%;
   margin-left: 3%;
-}
-
-.button-group {
-  margin: 3%;
-  text-align: right;
 }
 
 .d-flex{

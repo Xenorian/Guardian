@@ -16,11 +16,12 @@
 
   <el-table :data="tableData" style="width: 100%;margin: 1%;font-size: medium"
   @selection-change="handleSelectionChange" show-header 
-  :header-cell-style="{fontSize: '14px', backgroundColor: '#f8f8f8',color:'#333'}">
+  :header-cell-style="{fontSize: '14px', backgroundColor: '#f8f8f8',color:'#333'}"
+  v-loading="loading">
     <el-table-column type="selection" :selectable="selectable" width="55" />
-    <el-table-column fixed prop="date" label="规则序号" width="150" />
-    <el-table-column prop="name" label="规则ID" width="120" />
-    <el-table-column prop="state" label="规则文本" />
+    <el-table-column fixed prop="index" label="规则序号" width="150" />
+    <el-table-column prop="id" label="规则ID" width="120" />
+    <el-table-column prop="text" label="规则文本" />
     <!-- <el-table-column prop="city" label="City" width="120" />
     <el-table-column prop="address" label="Address" width="600" />
     <el-table-column prop="zip" label="Zip" width="120" /> -->
@@ -50,7 +51,19 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {ref ,onMounted } from 'vue'
+import {getFieldRule} from '@/utils/api'
+
+const loading = ref(true)
+const tableData = ref<any[]>([]);
+const fetchData = async () => {
+  try {
+    const response = await getFieldRule(); // 替换为实际的端点
+    tableData.value = response; // 假设后端返回的数据是一个数组
+  } catch (error) {
+    console.error('There was an error fetching the data!', error);
+  }
+};
 
 const handleClick = () => {
   console.log('click')
@@ -68,45 +81,6 @@ const handleSelectionChange = (val) => {
   }
 }
 
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-]
-
 const total = tableData.length
 const pageSize = ref(10)
 const currentPage = ref(1)
@@ -118,6 +92,12 @@ const handleCurrentChange = (newPage) => {
   // 这里可以调用你的分页请求函数
   console.log(`当前页码 ${newPage}`)
 }
+
+onMounted(async () => {
+  await fetchData();
+  // console.log(tableData); // 在数据获取后打印 tableData
+  loading.value = false
+});
 </script>
 
 <style scoped>

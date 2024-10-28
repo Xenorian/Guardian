@@ -7,7 +7,7 @@
     <template #cover>
       <img
         alt="example"
-        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+        src="../../assets/jail.jpeg"
       />
     </template>
 
