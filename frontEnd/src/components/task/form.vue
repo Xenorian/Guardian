@@ -22,7 +22,6 @@
 
       <el-select
         v-model="taskForm.rule"
-        multiple
         placeholder="please select"
       >
         <el-option
@@ -34,7 +33,7 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item class="formItem" label="选择模型" required>
+    <el-form-item class="formItem" label="选择模型" prop="model" required>
       <el-select v-model="taskForm.model" placeholder="please select">
         <el-option label="监管领域模型" value="1" />
       </el-select>
@@ -60,14 +59,13 @@ import type { ComponentSize, FormInstance, FormRules } from 'element-plus'
 
 import {getFieldRule} from '@/utils/api'
 import { useTaskFormStore } from '@/stores/taskForm';
-const { taskForm, clearTaskForm,setFormValid } = useTaskFormStore();
+const { taskForm,ruleData, clearTaskForm,setFormValid } = useTaskFormStore();
 
 const formSize = ref<ComponentSize>('default')
 const ruleFormRef = ref<FormInstance>()
 
 
 const loading = ref(true)
-const ruleData = ref<any[]>([]);
 
 const fetchData = async () => {
   try {

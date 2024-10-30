@@ -2,8 +2,8 @@
 import axios from 'axios';
 import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 
-export const BASE_URL = 'http://127.0.0.1:5000'; // 替换为你的后端 API 基础 URL
-// const BASE_URL = 'http://10.82.77.153:5000'; // 替换为你的后端 API 基础 URL
+export const BASE_URL = 'http://localhost:5000'; // 替换为你的后端 API 基础 URL
+// export const BASE_URL = 'http://10.82.77.153:5000'; // 替换为你的后端 API 基础 URL
 
 const GET_FIELD_RULE_ENDPOINT = 'field/getFieldRule'
 const UPLOAD_IMAGE_ENDPOINT = 'task/uploadImg'
@@ -12,9 +12,12 @@ const UPLOAD_VIDEO_ENDPOINT = 'task/uploadVideo'
 const GET_VIDEO_LIST_ENDPOINT = 'task/getVideo'
 const DEL_ENDPOINT = 'task/del'
 
+const IMG_INFERENCE_ENDPOINT = 'task/imgInference'
+const VIDEO_INFERENCE_ENDPOINT = 'task/videoInference'
+
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000, // 请求超时时间
+  timeout: 600000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
   },
@@ -71,7 +74,7 @@ const postData = async (endpoint: string, data: any) => {
     const response = await axiosInstance.post(endpoint, data);
     return response;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -94,5 +97,30 @@ export const getVideoList = async () =>{
 export const delThings = async (Url : string) =>{
   return postData(DEL_ENDPOINT, {
     url: Url
+  })
+}
+
+export const imgInference = async (rule_list) => {
+  if (Number.isInteger(rule_list)) {
+    // 如果是整数，则将其包装在数组中
+    rule_list = [rule_list];
+  }
+
+  // console.log(rule_list)
+  return postData(IMG_INFERENCE_ENDPOINT,{
+    rule_list: rule_list
+  })
+}
+
+export const videoInference = async (rule_list,video_url) => {
+  if (Number.isInteger(rule_list)) {
+    // 如果是整数，则将其包装在数组中
+    rule_list = [rule_list];
+  }
+
+  console.log(rule_list,video_url)
+  return postData(VIDEO_INFERENCE_ENDPOINT,{
+    rule_list: rule_list,
+    video_url: video_url
   })
 }

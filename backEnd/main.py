@@ -6,9 +6,46 @@ from werkzeug.utils import secure_filename
 from urllib.parse import urlparse, unquote
 
 import os
+import threading
+from pathlib import Path
 
-app = Flask(__name__)
+import requests
+import json
+
+STATIC_FOLDER = '/root/amax-volume/static/'
+
+lock = threading.Lock()
+
+app = Flask(__name__,static_folder=STATIC_FOLDER)
+video_idx = 0
+image_idx = 0
 CORS(app)  # 启用全局 CORS
+
+def get_next_index(directory_path):
+    # 初始化最大索引为 0
+    max_index = 0
+    
+    # 遍历文件夹中的所有文件
+    for filepath in Path(directory_path).iterdir():
+        # 仅处理文件，不处理目录
+        if filepath.is_file():
+            # 分割文件名，提取出数字部分
+            try:
+                # 假定文件名为 '1.jpg', '2.png' 等格式
+                index = int(filepath.stem)  # stem 是不带扩展名的部分
+                if index > max_index:
+                    max_index = index
+            except ValueError:
+                # 如果文件名不符合我们期望的格式，继续处理下一个
+                continue
+    
+    # 返回最大的索引加一
+    return max_index + 1
+
+
+video_idx = get_next_index(os.path.join(STATIC_FOLDER, 'videos'))
+image_idx = get_next_index(os.path.join(STATIC_FOLDER, 'images'))
+
 
 @app.route("/field/getFieldRule", methods=['POST'])
 def getFieldRule():
@@ -62,6 +99,8 @@ def allowed_file(filename):
 
 @app.route('/task/uploadImg', methods=['POST'])
 def upload_file():
+    global image_idx
+
     # 检查是否有文件被上传
     if 'file' not in request.files:
         return jsonify({'error': 'No file'}), 400
@@ -70,8 +109,11 @@ def upload_file():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join('static/' + IMAGE_FOLDER, filename))  # 替换为你的文件保存路径
+        filename = file.filename
+        filename = "{}{}".format(image_idx, os.path.splitext(filename)[1])
+        with lock:
+            file.save(os.path.join(os.path.join(app.static_folder, IMAGE_FOLDER), filename))  # 替换为你的文件保存路径
+            image_idx += 1
         return jsonify({'success': True, 'filename': filename}), 200
     else:
         return jsonify({'error': 'File type not allowed'}), 400
@@ -88,7 +130,7 @@ def get_imgs():
     
     # 遍历目录中的所有文件，获取图片文件名
     images = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
-    
+    images = sorted(images)
     # 生成每张图片的 URL
     image_urls = [url_for('static', filename=f'{IMAGE_FOLDER}/{img}') for img in images]
     
@@ -109,18 +151,25 @@ def del_things():
     # 解析 URL，提取路径部分
     parsed_url = urlparse(url)
     relative_path = unquote(parsed_url.path.lstrip('/'))
-    print(relative_path)
-    
-    # 安全校验，确保文件在 ./static 下
-    base_dir = os.path.abspath('./static')
-    file_path = os.path.abspath(relative_path)
+    path_parts = relative_path.split(os.sep)
+    path_parts[0] = app.static_folder
+    new_path = os.sep.join(path_parts)
 
-    if os.path.commonpath([base_dir]) != os.path.commonpath([base_dir, file_path]):
+    
+    # 安全校验，确保文件在 static 下
+    # 定义基目录和文件路径
+    base_dir = os.path.abspath(app.static_folder)
+    file_path = os.path.abspath(new_path)
+
+    # 校验文件路径是否在基目录下
+    if not file_path.startswith(base_dir + os.sep):
         return jsonify({'status': 'error', 'message': 'Invalid file path.'})
     
     # 尝试删除文件
     try:
-        os.remove(file_path)
+        with lock:
+            os.remove(file_path)
+
         return jsonify({'status': 'success', 'message': f'Image {url} deleted.'})
     except FileNotFoundError:
         return jsonify({'status': 'error', 'message': 'File not found.'})
@@ -136,6 +185,7 @@ def allowed_video_file(filename):
 
 @app.route('/task/uploadVideo', methods=['POST'])
 def upload_video():
+    global video_idx
     # 检查是否有文件被上传
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
@@ -144,8 +194,13 @@ def upload_video():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     if file and allowed_video_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join('static/', VIDEO_FOLDER, filename))  # 替换为视频文件夹路径
+        filename = file.filename
+        print(filename)
+        print(os.path.splitext(filename))
+        filename = "{}{}".format(video_idx, os.path.splitext(filename)[1])
+        with lock:
+            file.save(os.path.join(app.static_folder, VIDEO_FOLDER, filename))  # 替换为视频文件夹路径
+            video_idx += 1
         return jsonify({'success': True, 'filename': filename}), 200
     else:
         return jsonify({'error': 'File type not allowed'}), 400
@@ -162,12 +217,78 @@ def get_videos():
     
     # 遍历目录中的所有文件，获取视频文件名
     videos = [f for f in os.listdir(video_dir) if os.path.isfile(os.path.join(video_dir, f))]
-    
+    videos = sorted(videos)
     # 生成每个视频的 URL
     video_urls = [url_for('static', filename=f'{VIDEO_FOLDER}/{video}') for video in videos]
     
     # 返回 JSON 格式的视频 URL 列表
     return video_urls
 
-# @app.route('/task/imgInference', methods=['POST'])
-# def img_inference():
+@app.route('/task/imgInference', methods=['POST'])
+def img_inference():
+    # 获取 POST 请求中的 JSON 数据
+    data = request.get_json()
+    if data is None:
+        return jsonify({"error": "No JSON data provided"}), 400
+
+    rule_list = data.get('rule_list')
+    if rule_list is None:
+        return jsonify({"error": "'rule_list' not provided"}), 400
+
+
+    url = "http://127.0.0.1:5555/test_demo"
+    # 准备请求头和数据
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = {
+        "dataset_dir": "/home/wxy/docker-volume/static/images",
+        "rule_list": rule_list,
+        "image_type": "police office" 
+    }
+    # 发送 POST 请求
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+
+    if response.status_code == 200:
+        return jsonify({'success': True, 'data': response.text}), 200
+    else:
+        return jsonify({"error": "api error " + response.text }), 400
+
+@app.route('/task/videoInference', methods=['POST'])
+def video_inference():
+    # 获取 POST 请求中的 JSON 数据
+    data = request.get_json()
+    if data is None:
+        return jsonify({"error": "No JSON data provided"}), 400
+
+    rule_list = data.get('rule_list')
+    if rule_list is None:
+        return jsonify({"error": "'rule_list' not provided"}), 400
+    
+    video_url = data.get('video_url')
+    if video_url is None:
+        return jsonify({"error": "'video_url' not provided"}), 400
+
+    parsed_url = urlparse(video_url)
+    relative_path = unquote(parsed_url.path.lstrip('/'))
+    
+    path_parts = relative_path.split(os.sep)
+    path_parts[0] = '/home/wxy/docker-volume/static'
+    new_path = os.sep.join(path_parts)
+    
+    url = "http://127.0.0.1:6666/chatVideo"
+    # 准备请求头和数据
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = {
+        "video_dir": new_path,
+        "rule_list": rule_list,
+    }
+    # 发送 POST 请求
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+
+    if response.status_code == 200:
+        return jsonify({'success': True, 'data': response.text}), 200
+    else:
+        return jsonify({"error": "api error " + response.text }), 400

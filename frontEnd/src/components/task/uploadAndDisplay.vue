@@ -15,9 +15,9 @@
           :limit="1"
         >
         <el-carousel-item v-for="(src, index) in videos" :key="index">
-          <video
-            width="100%" 
+          <video 
             controls
+            style="height: 100%;max-width: 100%;"
             :src="src"
           />
         </el-carousel-item>
@@ -69,7 +69,7 @@
     </el-upload>
 
     <el-button type="danger" @click="delSomething" :disabled="images.length==0">删除该图片样本</el-button>
-    <el-button type="primary" @click="imgInference" :disabled="images.length==0 || !formValid.val">开始运行</el-button>
+    <el-button type="primary" @click="_imgInference" :disabled="images.length==0 || !formValid.value">开始运行</el-button>
   </div>
 
   <div v-if="activeName === 'Video'" class="button-group">
@@ -86,20 +86,20 @@
     </el-upload>
 
     <el-button type="danger" @click="delSomething" :disabled="videos.length==0">删除该视频样本</el-button>
-    <el-button type="primary" @click="videoInference" :disabled="videos.length!=1 || !formValid.val">开始运行</el-button>
+    <el-button type="primary" @click="_videoInference" :disabled="videos.length!=1 || !formValid.value">开始运行</el-button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps, ref, computed,onMounted } from 'vue';
+import { ref, computed,onMounted } from 'vue';
 
 import { UploadFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
-import { uploadImageURL,getImgList,uploadVideoURL,getVideoList,BASE_URL,delThings } from '@/utils/api'
+import { uploadImageURL,getImgList,uploadVideoURL,getVideoList,BASE_URL,delThings,imgInference,videoInference } from '@/utils/api'
 import { useTaskFormStore } from '@/stores/taskForm';
+import { useAPIResponseStore } from '@/stores/apiResponse'
 const { taskForm,formValid } = useTaskFormStore();
-
-const props = defineProps(['ruleForm'])
+const { apiResponse } = useAPIResponseStore();
 
 const loading = ref(true)
 
@@ -134,18 +134,19 @@ const fetchVideoList = async () => {
   }
 };
 
+const result = ref({})
 const delSomething = async() => {
-  if(activeName == 'Video'){
-    const result = await delThings(images.value[currentImageIndex.value])
+  if(activeName.value == 'Image'){
+    result.value = await delThings(images.value[currentImageIndex.value])
   }else{
-    const result = await delThings(videos.value[currentVideoIndex.value])
+    result.value = await delThings(videos.value[currentVideoIndex.value])
   }
 
   // console.log(result)
-  if(result.status == 'success'){
+  if(result.value.status == 'success'){
     ElMessage.success('删除成功')
   }else{
-    ElMessage.error(`删除失败: ${result.message}`);
+    ElMessage.error(`删除失败: ${result.value.message}`);
   }
 
   loading.value = true
@@ -154,19 +155,38 @@ const delSomething = async() => {
   loading.value = false
 }
 
-const imgInference = async() => {
-  console.log({
-    dataset_dir:"123",
-    rule_list:taskForm.rule,
-    image_type:"police office"
-  })
+const _imgInference = async() => {
+  try {
+    loading.value = true
+    
+    if(apiResponse.data){
+      delete apiResponse.data
+    }
+
+    const response = await imgInference(taskForm.rule); // 替换为实际的端点
+    apiResponse.data = JSON.parse(response.data)
+    loading.value = false
+  } catch (error) {
+    console.error('There was an error when generate inference response', error);
+    loading.value = false
+  }
 }
 
-const videoInference = async() => {
-  console.log({
-    video_url:"123",
-    rule_list:taskForm.rule,
-  })
+const _videoInference = async() => {
+  try {
+    loading.value = true
+    
+    if(apiResponse.data){
+      delete apiResponse.data
+    }
+
+    const response = await videoInference(taskForm.rule,videos.value[0]); // 替换为实际的端点
+    apiResponse.data = JSON.parse(response.data)
+    loading.value = false
+  } catch (error) {
+    console.error('There was an error when generate inference response', error);
+    loading.value = false
+  }
 }
 
 const currentImageIndex = ref(0)
@@ -205,6 +225,8 @@ const beforeImgUpload = (file) => {
   }
   if (!isLt5M) {
     ElMessage.error('文件大小不能超过 5MB!');
+  }else{
+    loading.value = true
   }
 
   return isJPGorPNG && isLt5M;
@@ -216,13 +238,15 @@ const beforeImgUpload = (file) => {
 const beforeVideoUpload = (file) => {
   const isVideoType =
     file.type === 'video/mp4' || file.type === 'video/avi' || file.type === 'video/mov';
-  const isLt50M = file.size / 1024 / 1024 < 50;
+  const isLt50M = file.size / 1024 / 1024 < 100;
 
   if (!isVideoType) {
     ElMessage.error('只能上传 mp4、avi 或 mov 格式的视频!');
   }
   if (!isLt50M) {
-    ElMessage.error('视频大小不能超过 50MB!');
+    ElMessage.error('视频大小不能超过 100MB!');
+  }else{
+    loading.value = true
   }
 
   return isVideoType && isLt50M;
