@@ -2,7 +2,7 @@
 import axios from 'axios';
 import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 
-export const BASE_URL = 'http://localhost:5000'; // 替换为你的后端 API 基础 URL
+export const BASE_URL = 'http://localhost:11431'; // 替换为你的后端 API 基础 URL
 // export const BASE_URL = 'http://10.82.77.153:5000'; // 替换为你的后端 API 基础 URL
 
 const GET_FIELD_RULE_ENDPOINT = 'field/getFieldRule'

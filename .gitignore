@@ -1,1 +1,5 @@
 backEnd/static/
+backEnd/__pycache__
+backEnd/__pycache__/*
+backEnd/nohup.out
+frontEnd/nohup.out

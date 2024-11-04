@@ -8,7 +8,7 @@
 
     <el-col :span="6" :offset="12">
       <div class="button-group">
-        <el-button type="primary">新增规则</el-button>
+        <el-button type="primary" @click="handleAddRule">新增规则</el-button>
         <el-button type="primary" :disabled="notAbleToCreateTask">创建任务</el-button>
       </div>
     </el-col>
@@ -48,11 +48,40 @@
     style="justify-content: right; /* 水平 */"
   />
 
+  <el-dialog
+    v-model="showAddRuleForm"
+    title="新增规则"
+    width="1000"
+  >
+    <AddRuleForm />    
+
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="showAddRuleForm = false">Cancel</el-button>
+        <el-button type="primary" @click="handleSubmit">
+          Confirm
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import {ref ,onMounted } from 'vue'
 import {getFieldRule} from '@/utils/api'
+import AddRuleForm from '@/components/rule/AddRuleForm.vue'
+import { ElMessageBox } from 'element-plus'
+
+const showAddRuleForm = ref(false)
+const handleAddRule = () => {
+  showAddRuleForm.value = true
+}
+const handleSubmit = async() => {
+  loading.value = true
+  await fetchData()
+  loading.value = false
+  showAddRuleForm.value = false
+}
 
 const loading = ref(true)
 const tableData = ref<any[]>([]);

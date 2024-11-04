@@ -33,6 +33,7 @@
           <el-text class="mx-1" size="large" type="info">违规条约:</el-text>
           <el-text class="mx-1">{{ alert.rule }}</el-text>
           <el-text class="mx-1" size="large" type="info">违规描述:</el-text>
+          <el-text class="mx-1" >{{ alert.result }}</el-text>
           <el-text class="mx-1" type="danger">{{ alert.description }}</el-text>
         </div>
       </el-scrollbar>
@@ -76,16 +77,25 @@ watch(apiResponse, () => {
   if(apiResponse.data !== undefined){
     for (let i = 0; i < apiResponse.data.data.length; i++) {
       if( apiResponse.data.data[i].result !== 'NO'){
-        continue
+        // obey the rule
+        if (apiResponse.modal == 'image'){
+
+        }else if (apiResponse.modal == 'video'){
+          continue
+        }
+
+      }else{
+        // violate the rule
+        alertCnt.value += 1
+        alertRuleCnt.value = 1
+        alertRules.value = [ruleID2ruleText[taskForm.rule]]
       }
 
-      alertCnt.value += 1
-      alertRuleCnt.value = 1
-      alertRules.value = [ruleID2ruleText[taskForm.rule]]
       const content = {
         'img': 'data:image/png;base64,' + apiResponse.data.data[i].photo_base64,
         'description': apiResponse.data.data[i].description,
-        'rule': ruleID2ruleText[taskForm.rule]
+        'rule': ruleID2ruleText[taskForm.rule],
+        'result': apiResponse.data.data[i].result
       }
       alertsContents.value.push(content)
       srcList.value.push('data:image/png;base64,' + apiResponse.data.data[i].photo_base64)

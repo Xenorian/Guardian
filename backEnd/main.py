@@ -276,7 +276,7 @@ def video_inference():
     path_parts[0] = '/home/wxy/docker-volume/static'
     new_path = os.sep.join(path_parts)
     
-    url = "http://127.0.0.1:6666/chatVideo"
+    url = "http://127.0.0.1:4444/chatVideo"
     # 准备请求头和数据
     headers = {
         "Content-Type": "application/json"

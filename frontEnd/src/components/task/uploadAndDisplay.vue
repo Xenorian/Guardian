@@ -165,6 +165,7 @@ const _imgInference = async() => {
 
     const response = await imgInference(taskForm.rule); // 替换为实际的端点
     apiResponse.data = JSON.parse(response.data)
+    apiResponse.modal = 'image'
     loading.value = false
   } catch (error) {
     console.error('There was an error when generate inference response', error);
@@ -182,6 +183,7 @@ const _videoInference = async() => {
 
     const response = await videoInference(taskForm.rule,videos.value[0]); // 替换为实际的端点
     apiResponse.data = JSON.parse(response.data)
+    apiResponse.modal = 'video'
     loading.value = false
   } catch (error) {
     console.error('There was an error when generate inference response', error);
